@@ -4,10 +4,10 @@
 
 ## Task 1
 
-Solution (`rootFinder.py`):
+Solution (`rootFinding.py`):
 
 ```python
-def fixedPointRootFinder(f, initial_approximation, tolerance, max_iterations):
+def fixedPoint(f, initial_approximation, tolerance, max_iterations):
   error = 10.0 * tolerance
   x0 = initial_approximation
   x1 = 0
@@ -24,19 +24,15 @@ def fixedPointRootFinder(f, initial_approximation, tolerance, max_iterations):
   return x0
 ```
 
-Driver code (`driver.py`):
+Driver code (`task1.py`):
 
 ```python
-from rootFinder import fixedPointRootFinder
+from rootFinding import fixedPoint
 
 def f(x):
   return x * pow(e, -x)
 
-tolerance = 0.0000001
-max_iterations = 1000
-initial_guess = 0.5
-print(fixedPointRootFinder(f, initial_guess, tolerance, max_iterations))
-
+print(fixedPoint(f, initial_guess=0.5, tolerance=0.0000001, max_iterations=1000))
 ```
 
 Example output:
@@ -47,7 +43,7 @@ Example output:
 
 ## Task 2
 
-Solution (`rootFinder.py`):
+Solution (`rootFinding.py`):
 
 ```python
 from math import e
@@ -58,7 +54,7 @@ for arg in argv:
   if arg == '-v' or arg == '--v' or arg == '--verbose':
     verbose = True
 
-def fixedPointRootFinder(f, initial_approximation, tolerance, max_iterations):
+def fixedPoint(f, initial_approximation, tolerance, max_iterations):
   error = 10.0 * tolerance
   x0 = initial_approximation
   x1 = 0
@@ -81,18 +77,15 @@ def fixedPointRootFinder(f, initial_approximation, tolerance, max_iterations):
   return x0
 ```
 
-Driver code (`driver.py`):
+Driver code (`task2.py`):
 
 ```python
-from rootFinder import fixedPointRootFinder
+from rootFinding import fixedPoint
 
 def f(x):
   return x * pow(e, -x)
 
-tolerance = 0.0000001
-max_iterations = 1000
-initial_guess = 0.5
-print(fixedPointRootFinder(f, initial_guess, tolerance, max_iterations))
+print(fixedPoint(f, initial_guess=0.5, tolerance=0.000001, max_iterations=1000))
 ```
 
 To run in terminal:
@@ -130,7 +123,7 @@ I wrote a program to check every 0.25 along the interval [-3, 7].
 
 ```python
 from math import cos, e, pi
-from rootFinder import fixedPointRootFinder
+from rootFinding import fixedPoint
 
 def f(x):
   return 10.14 * pow(e, x * x) * cos(pi / x)
@@ -139,7 +132,7 @@ for i in range(-12, 29):
   print()
   print(i/4)
   try:
-    print(fixedPointRootFinder(f, i/4, 0.01, 100))
+    print(fixedPoint(f, i/4, 0.01, 100))
   except:
     print('failure')
 ```
@@ -148,7 +141,7 @@ I tested this using `g(x) = x - f(x)` and also attempting it with `g(x) = x + f(
 
 ## Task 4
 
-Solution:
+Solution `rootFinding.py`:
 
 ```python
 from math import ceil, e, log
