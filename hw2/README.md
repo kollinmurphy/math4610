@@ -1,4 +1,4 @@
-# Kollin Murphy's Tasksheet 2
+# Tasksheet 2
 
 ## Task 1: Newton's Method
 
