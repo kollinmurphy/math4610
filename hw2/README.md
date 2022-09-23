@@ -1,5 +1,7 @@
 # Tasksheet 2
 
+See additional documentation [here](docs/README.md).
+
 ## Task 1: Newton's Method
 
 ```python

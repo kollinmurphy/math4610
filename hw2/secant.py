@@ -25,8 +25,3 @@ def secant(f, x0, x1, maxIterations, tolerance):
     if verbose:
       print("{:<12} {:<24} {:<24}".format(i, x1, abs(f1)))
   return x1
-
-def f(x):
-  return x * pow(e, -x)
-
-print(secant(f, 1, 0.5, 100, 0.00001))

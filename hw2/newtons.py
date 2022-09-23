@@ -20,11 +20,3 @@ def newtons(f, fPrime, x, maxIterations, tolerance):
     if verbose:
       print("{:<12} {:<24} {:<24}".format(i, x, abs(y)))
   return x
-
-def f(x):
-  return x * pow(e, -x)
-
-def fPrime(x):
-  return pow(e, -x) - (x * pow(e, -x))
-
-print(newtons(f, fPrime, -3.0, 1000, 0.00001))
