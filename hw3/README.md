@@ -5,7 +5,6 @@
 I rewrote all six functions in C. View them [here](https://github.com/kollinmurphy/math4610/hw3/src).
 
 
-
 ## Task 2
 
 I was able to succcessfully pass a function using a function pointer. I got the following results from `newtons`:
@@ -17,7 +16,6 @@ newtons
 ```
 
 
-
 ## Task 3
 
 I was able to link the object files from each function using the command `gcc -o testRootFinding testRootFinding.c *.o -lm`. My results were as follows:
@@ -25,13 +23,11 @@ I was able to link the object files from each function using the command `gcc -o
 ![task3](img/task3.png)
 
 
-
 ## Task 4
 
 I was able to successfully create a shared library of my code.
 
 ![task4](img/task4.png)
-
 
 
 ## Task 5
