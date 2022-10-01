@@ -2,7 +2,7 @@
 
 ## Task 1
 
-I rewrote all six functions in C. View them [here](https://github.com/kollinmurphy/math4610/hw3/src).
+I rewrote all six functions in C. View them [here](https://github.com/kollinmurphy/math4610/tree/master/hw3/src).
 
 
 ## Task 2
