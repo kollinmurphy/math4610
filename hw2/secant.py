@@ -14,7 +14,7 @@ def secant(f, x0, x1, maxIterations, tolerance):
     print("{:<12} {:<24} {:<24}".format("Iteration", "Approx. Root", "Abs. Error"))
 
   while (abs(f1) > tolerance and i < maxIterations):
-    x2 = x1 - f1 * (x1 - x0)  /(f1 - f0)
+    x2 = x1 - f1 * (x1 - x0) / (f1 - f0)
     x0 = x1
     x1 = x2
     f0 = f1
