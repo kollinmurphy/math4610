@@ -2,12 +2,12 @@
 
 ## Task 1
 
-I rewrote all six functions in C. View them [here](https://github.com/kollinmurphy/math4610/tree/master/hw3/src).
+I rewrote all six functions in C. View them [here](codes.md).
 
 
 ## Task 2
 
-I was able to succcessfully pass a function using a function pointer. I got the following results from `newtons`:
+I was able to successfully pass a function using a function pointer. I got the following results from `newtons`:
 
 ```
 newtons
@@ -18,14 +18,14 @@ newtons
 
 ## Task 3
 
-I was able to link the object files from each function using the command `gcc -o testRootFinding testRootFinding.c *.o -lm`. My results were as follows:
+I was able to link the object files from each function using the command `gcc -o testRootFinding testRootFinding.c *.o -lm`. Without the `-lm` flags it was throwing errors, saying that it wasn't able to properly link the files. My final working results were as follows:
 
 ![task3](img/task3.png)
 
 
 ## Task 4
 
-I was able to successfully create a shared library of my code.
+I was able to successfully create a shared library of my code as follows.
 
 ![task4](img/task4.png)
 
