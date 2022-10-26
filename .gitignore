@@ -2,3 +2,4 @@ notes/
 __pycache__/
 *.pdf
 .vscode
+hw3/src/output/

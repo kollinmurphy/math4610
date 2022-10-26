@@ -4,7 +4,7 @@
 
 ## Task 1
 
-Solution (`rootFinding.py`):
+I decided to implement the fixed point iteration algorithm using Python. It takes as input a defined function, an initial approximation x0, a tolerance, and a maximum number of iterations. It defines a function `g(x) = x - f(x)`  which is used to implement the algorithm.
 
 ```python
 def fixedPoint(f, initial_approximation, tolerance, max_iterations):
@@ -24,7 +24,7 @@ def fixedPoint(f, initial_approximation, tolerance, max_iterations):
   return x0
 ```
 
-Driver code (`task1.py`):
+I wrote the following test code in a separate Python file. I defined the function `f(x) = x * e^(-x)`. Due to the nature of the fixed point algorithm, it is very sensitive to the initial approximation. In order for it to get close to the actual root at `x=0`, I had to give it an initial approximation sufficiently close to that so it wouldn't blow up and would converge to the root.
 
 ```python
 from rootFinding import fixedPoint
@@ -32,18 +32,20 @@ from rootFinding import fixedPoint
 def f(x):
   return x * pow(e, -x)
 
-print(fixedPoint(f, initial_guess=0.5, tolerance=0.0000001, max_iterations=1000))
+print(fixedPoint(f, initial_approximation=0.5, tolerance=0.0000001, max_iterations=1000))
 ```
 
-Example output:
+Running the above code, I received the following result:
 
 ```
 4.676720855835697e-24
 ```
 
+The code got within a reasonable margin of error of the actual root, however this algorithm is quite unstable and approaches the root significantly slower than other, more robust methods.
+
 ## Task 2
 
-Solution (`rootFinding.py`):
+To add the verbose flag to the `fixedPoint` function, I imported `sys.argv` into my code. It loops through the given arguments. If any of them are equal to `-v` or `--verbose`, then it enables the verbose flag. After initializing the variables, it prints out tabular headers to make visualizing the results easier. During the iterations of the loop, it prints out in tabular form the data from that iteration.
 
 ```python
 from math import e
@@ -77,7 +79,7 @@ def fixedPoint(f, initial_approximation, tolerance, max_iterations):
   return x0
 ```
 
-Driver code (`task2.py`):
+Test code saved to `driver.py`
 
 ```python
 from rootFinding import fixedPoint
@@ -85,16 +87,16 @@ from rootFinding import fixedPoint
 def f(x):
   return x * pow(e, -x)
 
-print(fixedPoint(f, initial_guess=0.5, tolerance=0.000001, max_iterations=1000))
+print(fixedPoint(f, initial_approximation=0.5, tolerance=0.000001, max_iterations=1000))
 ```
 
-To run in terminal:
+To run the  driver, we need to enable verbose mode by passing the command line argument as follows:
 
 ```bash
 % python driver.py -v
 ```
 
-Example output:
+The output I received was the following. As you can see, from the initial approximation of `0.5`, it approached the actual root of `0`. It started off slow, and then started approaching the root much more rapidly until the desired tolerance was reached.
 
 ```
 Iteration    Approx. Root             Abs. Error              
@@ -106,8 +108,6 @@ Iteration    Approx. Root             Abs. Error
 6            4.676720855835697e-24    2.1626031395538813e-12  
 4.676720855835697e-24
 ```
-
-
 
 ## Task 3
 
