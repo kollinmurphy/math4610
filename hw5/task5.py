@@ -14,11 +14,11 @@ def simpsonsRule(f, a, b, n):
 def calculateNFromH(a, b, h):
   return (b - a) / h
 
-hvals = [1/4, 1/8, 1/16, 1/32, 1/64, 1/128, 1/256, 1/512, 1/1024, 1/2048, 1/4196]
+hvals = [1/4, 1/8, 1/16, 1/32, 1/64, 1/128, 1/256, 1/512]
 nvals = [int(calculateNFromH(0, 1, h)) for h in hvals]
 
-# I calculated the actual value of the integral using Wolfram Alpha
-actual = 0.6498803300786573037276521829129935239240253152760926685227030955
+# actual = 0.6498803300786573037276521829129935239240253152760926685227030955 # from Wolfram Alpha
+actual = 0.6498803300786583 # calculated using h=1/1024
 
 def f(x):
   return pow(e, -x * x)
@@ -32,3 +32,4 @@ plt.xlabel("log(h)")
 plt.ylabel("log(error)")
 plt.savefig("task5.png")
 plt.show()
+plt.clf()

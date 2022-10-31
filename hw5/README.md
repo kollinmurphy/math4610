@@ -18,8 +18,10 @@ def implicitEulerMethod(alpha, beta, p0, n=100, h=1.0):
       return p - ptable[i - 1] - h * (alpha * p - beta * p * p)
     pval = newtons(f, fPrime, ptable[i - 1], 100, 1e-6)
     ptable[i] = pval
-  return [[i*h, ptable[i]] for i in range(n)]
+  return zip(*[[i*h, ptable[i]] for i in range(n)])
 ```
+
+This function takes as input the parameters alpha, beta, p0, n, and h. It returns two lists, the first one containing the values of $t$, and the second one containing the values of $P(t)$. The function uses the implicit Euler method to solve the logistics equation. The function uses Newton's method to solve the rootfinding problem that arises during the implicit Euler algorithm. 
 
 I used the following code to test and plot the results, and save the plots as individual files.
 
@@ -31,7 +33,7 @@ tests = [
 ]
 
 for test in tests:
-  tvals, pvals = zip(*implicitEulerMethod(test[0], test[1], test[2], test[3], test[4]))
+  tvals, pvals = implicitEulerMethod(test[0], test[1], test[2], test[3], test[4])
   plt.title(test[5])
   plt.xlabel('t')
   plt.ylabel('P(t)')
@@ -40,17 +42,17 @@ for test in tests:
   plt.clf()
 ```
 
-These are my results:
+I varied the values of $n$ and $h$ to fit the curves in a window where we could see them reach their carrying capacity. These are my results:
 
-**Test 1.** I used the following parameters: alpha = 0.2, beta = 0.0005, p0 = 10.0, n = 75, h = 1.0. This is the plot:
+**Test 1.** I used the following parameters: $\alpha = 0.2$, $\beta = 0.0005$, $P_0 = 10.0$, $n = 75$, $h = 1.0$. This is the plot:
 
 ![Test 1](task1-test1.png)
 
-**Test 2.** I used the following parameters: alpha = 0.01, beta = 0.0005, p0 = 10.0, n = 350, h = 2.0. This is the plot:
+**Test 2.** I used the following parameters: $\alpha = 0.01$, $\beta = 0.0005$, $P_0 = 10.0$, $n = 350$, $h = 2.0$. This is the plot:
 
 ![Test 2](task1-test2.png)
 
-**Test 3.** I used the following parameters: alpha = 2.0, beta = 0.0005, p0 = 10.0, n = 75, h = 0.1. This is the plot:
+**Test 3.** I used the following parameters: $\alpha = 2.0$, $\beta = 0.0005$, $P_0 = 10.0$, $n = 75$, $h = 0.1$. This is the plot:
 
 ![Test 3](task1-test3.png)
 
@@ -72,14 +74,14 @@ dt &= \frac{dP}{\alpha P - \beta P^2} \\
 t+C &= \int \frac{1}{P^2(\frac {\alpha}{P}  - \beta)}\;dP
 \end{align*}
 $$
-By using u-substitution, we are able to solve this integral.
+By using $u$-substitution, we are able to solve this integral.
 $$
 \begin{align*}
 u &= \frac{\alpha}{P} - \beta \\
 du &=-\alpha P^{-2}\;dP
 \end{align*}
 $$
-Substituting this into the integral, we get:
+Substituting $u$ and $du$ into the integral, we get:
 $$
 \begin{align*}
 \int \frac{1}{P^2(\frac {\alpha}{P}  - \beta)}\;dP &= \int -\frac{1}{\alpha u}\;du \\
@@ -94,10 +96,107 @@ t &= -\frac{\ln|\frac{\alpha}{P} - \beta |}{\alpha} + C
 \end{align*}
 $$
 
+Then, we solve for $t$:
+$$
+\begin{align*}
+-\alpha t+c_1 &= \ln |\frac{\alpha}{P} - \beta | \\
+e^{-\alpha t+c_1} &=\frac{\alpha}{P} - \beta \\
+c_2e^{-\alpha t}+\beta &=\frac{\alpha}{P} \\
+P &= \frac{\alpha}{c_2e^{-\alpha t}+\beta}
+\end{align*}
+$$
+We can also solve for $c_2$ by knowing that $P(0)=P_0$.
+$$
+\begin{align*}
+P(0) = P_0 &= \frac{\alpha}{c_2e^{-\alpha (0)}+\beta} \\
+P_0 &= \frac{\alpha}{c_2 + \beta} \\
+c_2 &= \frac{\alpha}{P_0}-\beta
+\end{align*}
+$$
+So, the final analytic solution is $P(t, \alpha, \beta, P_0) = \frac{\alpha}{(\frac{\alpha}{P_0}-\beta)e^{-\alpha t}+\beta}$.
+
+I was able to implement this analytic solution in Python using the following code:
+
+```python
+from math import exp
+
+def analyticSolution(alpha, beta, p0, n=100, h=1.0):
+  """Solve the logistic equation using the analytic solution."""
+  c = alpha / p0 - beta
+  return zip(*[[i*h, alpha / (c * exp(-alpha * i*h) + beta)] for i in range(n)])
+```
+
+This method returns two lists, the first one containing the values of $t$, and the second one containing the values of $P(t)$.
 
 ## Task 3
 
+In this task, I used the same test cases as in Task 1. I used the following code to test and plot the results, and save the plots as individual files.
 
+```python
+tests = [
+  [0.2, 0.0005, 10.0, 50, 2, "Test 1 (n=50, h=2.0)", "task3-test1-a.png"],
+  [0.2, 0.0005, 10.0, 200, 0.5, "Test 1 (n=200, h=0.5)", "task3-test1-b.png"],
+  [0.01, 0.0005, 10.0, 50, 15.0, "Test 2 (n=50, h=15.0)", "task3-test2-a.png"],
+  [0.01, 0.0005, 10.0, 200, 3.75, "Test 2 (n=200, h=3.75)", "task3-test2-b.png"],
+  [2.0, 0.0005, 10.0, 50, 0.2, "Test 3 (n=50, n=0.2)", "task3-test3-a.png"],
+  [2.0, 0.0005, 10.0, 200, 0.05, "Test 3 (n=200, 0.05)", "task3-test3-b.png"],
+]
+
+for test in tests:
+  tImplicit, pImplicit = implicitEulerMethod(test[0], test[1], test[2], test[3], test[4])
+  tExplicit, pExplicit = explicitEulerLogistic(test[0], test[1], test[2], test[3], test[4])
+  tAnalytic, pAanalytic = analyticSolution(test[0], test[1], test[2], test[3], test[4])
+
+  plt.title(test[5])
+  plt.xlabel('t')
+  plt.ylabel('P(t)')
+
+  plt.plot(tImplicit, pImplicit, 'r', label='Implicit Euler')
+  plt.plot(tExplicit, pExplicit, 'g', label='Explicit Euler')
+  plt.plot(tAnalytic, pAanalytic, 'b', label='Analytic')
+
+  plt.legend(loc="lower right")
+  plt.savefig(test[6])
+  plt.clf()
+```
+
+For each test, I plotted the results of the implicit Euler method, the explicit Euler method, and the analytic solution. I also saved the plots as individual files. I used two different values for $n$ for each test case, $n=50$ and $n=200$. I varied the value of $h$ to fit the plot in a window that would show the entire relevant portion of the graph, and to display the same view of the graph with the different values of $n$. Below are the plots for each test case.
+
+**Test 1.** I used the following parameters: $\alpha = 0.2$, $\beta = 0.0005$, $P_0 = 10.0$.
+
+With $n=50$ and $h=2.0$:
+
+<img src="task3-test1-a.png" width="400px" />
+
+
+
+![Test 1A](task3-test1-a.png)
+
+With $n=200$ and $h=0.5$:
+
+![Test 1B](task3-test1-b.png)
+
+**Test 2.** I used the following parameters: $\alpha = 0.01$, $\beta = 0.0005$, $P_0 = 10.0$. This is the plot:
+
+With $n=50$ and $h=15.0$:
+
+![Test 2A](task3-test2-a.png)
+
+With $n=200$ and $h=3.75$:
+
+![Test 2B](task3-test2-b.png)
+
+**Test 3.** I used the following parameters: $\alpha = 2.0$, $\beta = 0.0005$, $P_0 = 10.0$. This is the plot:
+
+With $n=50$ and $h=0.2$:
+
+![Test 3A](task3-test3-a.png)
+
+With $n=200$ and $h=0.05$:
+
+![Test 3B](task3-test3-b.png)
+
+As seen from the graphs, there is a little deviation from the analytic solution for both the implicit and explicit methods of approximation. This is expected, since the analytic solution is exact, while the numerical methods are approximations. The deviation was larger when the value of $h$ was larger, and smaller when the value of $h$ was smaller. This is also expected, since the smaller the value of $h$, the more accurate the approximation.
 
 ## Task 4
 
@@ -112,7 +211,9 @@ def trapezoidRule(f, a, b, n):
   return sum * h
 ```
 
-I tested the trapezoid rule by using the following code:
+This function takes as input a function $f$, the interval $[a, b]$, and the number of subintervals $n$. It returns the approximation of the integral of $f$ over the interval $[a, b]$ using the composite trapezoid rule.
+
+I tested the function by using the following code:
 
 ```python
 from math import e, pow, pi
@@ -122,8 +223,8 @@ tests = [2, 4, 8, 16, 100000]
 def f(x):
   return pow(e, -x * x)
 
-for test in tests:
-  print(f"n={test}; approx={trapezoidRule(f, 0, pi / 4, test)}")
+for n in tests:
+  print(f"n={n}; approx={trapezoidRule(f, 0, pi / 4, n)}")
 ```
 
 The output of the test code is:
@@ -133,7 +234,7 @@ n=2; approx=0.6388862805734845
 n=4; approx=0.6471507696813964
 n=8; approx=0.6491991053630145
 n=16; approx=0.6497100964398593
-n=10000; approx=0.6498803296429212
+n=1000; approx=0.6498802865050275
 ```
 
 It appears that the sequence is converging to a value of approximately `0.64988`. This is the correct value of the integral of `e^(-x^2)` from `0` to `pi / 4`.
@@ -152,6 +253,8 @@ def simpsonsRule(f, a, b, n):
     x += h
   return sum * h / 6
 ```
+
+The function takes as input a function $f$, the interval $[a, b]$, and the number of subintervals $n$. It returns the approximation of the integral of $f$ over the interval $[a, b]$ using the composite Simpson's rule.
 
 I tested my implementation with the following code:
 
