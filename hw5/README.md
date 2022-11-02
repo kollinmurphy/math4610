@@ -46,15 +46,15 @@ I varied the values of $n$ and $h$ to fit the curves in a window where we could 
 
 **Test 1.** I used the following parameters: $\alpha = 0.2$, $\beta = 0.0005$, $P_0 = 10.0$, $n = 75$, $h = 1.0$. This is the plot:
 
-![Test 1](task1-test1.png)
+<img src="task1-test1.png" width="400px" />
 
 **Test 2.** I used the following parameters: $\alpha = 0.01$, $\beta = 0.0005$, $P_0 = 10.0$, $n = 350$, $h = 2.0$. This is the plot:
 
-![Test 2](task1-test2.png)
+<img src="task1-test2.png" width="400px" />
 
 **Test 3.** I used the following parameters: $\alpha = 2.0$, $\beta = 0.0005$, $P_0 = 10.0$, $n = 75$, $h = 0.1$. This is the plot:
 
-![Test 3](task1-test3.png)
+<img src="task1-test3.png" width="400px" />
 
 ## Task 2
 
@@ -168,33 +168,29 @@ With $n=50$ and $h=2.0$:
 
 <img src="task3-test1-a.png" width="400px" />
 
-
-
-![Test 1A](task3-test1-a.png)
-
 With $n=200$ and $h=0.5$:
 
-![Test 1B](task3-test1-b.png)
+<img src="task3-test1-b.png" width="400px" />
 
 **Test 2.** I used the following parameters: $\alpha = 0.01$, $\beta = 0.0005$, $P_0 = 10.0$. This is the plot:
 
 With $n=50$ and $h=15.0$:
 
-![Test 2A](task3-test2-a.png)
+<img src="task3-test2-a.png" width="400px" />
 
 With $n=200$ and $h=3.75$:
 
-![Test 2B](task3-test2-b.png)
+<img src="task3-test2-b.png" width="400px" />
 
 **Test 3.** I used the following parameters: $\alpha = 2.0$, $\beta = 0.0005$, $P_0 = 10.0$. This is the plot:
 
 With $n=50$ and $h=0.2$:
 
-![Test 3A](task3-test3-a.png)
+<img src="task3-test3-a.png" width="400px" />
 
 With $n=200$ and $h=0.05$:
 
-![Test 3B](task3-test3-b.png)
+<img src="task3-test3-b.png" width="400px" />
 
 As seen from the graphs, there is a little deviation from the analytic solution for both the implicit and explicit methods of approximation. This is expected, since the analytic solution is exact, while the numerical methods are approximations. The deviation was larger when the value of $h$ was larger, and smaller when the value of $h$ was smaller. This is also expected, since the smaller the value of $h$, the more accurate the approximation.
 
@@ -308,7 +304,7 @@ plt.show()
 
 The resulting plot is:
 
-![Log-Log Plot of Error vs. h](task5.png)
+<img src="task5.png" width="400px" />
 
 As can be seen in the plot, as the value of h decreased, the accuracy increased until a certain point at which the accuracy stopped increasing and actually decreased due to floating point errors.
 
@@ -330,4 +326,4 @@ h              | approx         | error
 2.38322212e-04 | 6.49880330e-01 | 9.99200722e-15
 ```
 
-When `h` was cut in half, the accuracy of the approximation increased by a factor of 16. This is because the number of intervals was doubled. This is consistent with the convergence rate of Simpson's rule, which is `O(h^4)`. This means that the error is proportional to `h^4`.
+When $h$ was cut in half, the accuracy of the approximation increased by a factor of 16. This is because the number of intervals was doubled. This is consistent with the convergence rate of Simpson's rule, which is $O(h^4)$. This means that the error is proportional to $h^4$.

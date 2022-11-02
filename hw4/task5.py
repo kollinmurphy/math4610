@@ -1,11 +1,8 @@
-def explicitEulerLogistic(alpha, beta, p0):
+def explicitEulerLogistic(alpha, beta, p0, n=100, h=1.0):
   def f(p):
     return alpha * p - beta * (p * p)
 
-  T = 20
-  n = 100
   t0 = 0
-  h = (T - t0) / n
   f0 = f(p0)
   tvals = [t0]
   pvals = [p0]
