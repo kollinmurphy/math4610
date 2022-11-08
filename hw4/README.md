@@ -8,6 +8,7 @@ See attached images below for work.
 ![task1 pg. 2](img/task1-2.jpg)
 
 <div style="page-break-after: always;"></div>
+
 ## Task 2
 
 Implementation of second derivative approximation:
@@ -43,6 +44,7 @@ h = 0.0000001   approx =        -6.852157730108388e-16
 ```
 
 <div style="page-break-after: always;"></div>
+
 ## Task 3
 
 Implementation of least squares algorithm:
@@ -105,6 +107,7 @@ Which produced the output:
 ```
 
 <div style="page-break-after: always;"></div>
+
 ## Task 4
 
 Implementation:
@@ -134,6 +137,7 @@ rw-r--r-- 0/0   1512 Dec 31 17:00 1969 task4.o
 ```
 
 <div style="page-break-after: always;"></div>
+
 ## Task 5
 
 Implementation:
