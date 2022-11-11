@@ -3,3 +3,5 @@ __pycache__/
 *.pdf
 .vscode
 hw3/src/output/
+*.o
+*.out

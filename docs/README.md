@@ -12,7 +12,19 @@
 8. [Least Squares Regression](#least-squares-regression)
 9. [Explicit Euler Logistic](#explicit-euler-logistic)
 10. [Implicit Euler Logistic](#implicit-euler-logistic)
-
+11. [Vector Addition](#vector-addition)
+12. [Vector Subtraction](#vector-subtraction)
+13. [Vector Scalar Multiplication](#vector-scalar-multiplication)
+14. [Vector L1 Norm](#vector-l1-norm)
+15. [Vector L2 Norm](#vector-l2-norm)
+16. [Vector Infinity Norm](#vector-infinity-norm)
+17. [Vector Dot Product](#vector-dot-product)
+18. [Vector Cross Product](#vector-cross-product)
+19. [Vector Triple Product](#vector-triple-product)
+20. [Action of a Matrix on a Vector](#action-of-a-matrix-on-a-vector)
+21. [Matrix Addition](#matrix-addition)
+22. [Matrix Subtraction](#matrix-subtraction)
+23. [Matrix Multiplication](#matrix-multiplication)
 
 ## Fixed Point Iteration
 
@@ -848,3 +860,580 @@ def implicitEulerMethod(alpha, beta, p0, n=100, h=1.0):
     ptable[i] = pval
   return zip(*[[i*h, ptable[i]] for i in range(n)])
 ```
+
+## Vector Addition
+
+**Routine Name:** `sumOfVectors`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will add two vectors together. This function takes as input two vectors, `v1` and `v2`. It returns a vector that is the sum of the two input vectors.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+sumOfVectors(v1, v2)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+v2 = [4, 5, 6]
+v3 = sumOfVectors(v1, v2)
+print(v3)
+```
+
+Example output:
+
+```
+[5, 7, 9]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def sumOfVectors(v1, v2):
+    """Returns the vector addition of v1 and v2"""
+    if len(v1) != len(v2):
+        raise ValueError("Vectors must be of same length")
+    return [v1[i] + v2[i] for i in range(len(v1))]
+```
+
+## Vector Subtraction
+
+**Routine Name:** `differenceOfVectors`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will subtract two vectors. This function takes as input two vectors, `v1` and `v2`. It returns a vector that is the difference of the two input vectors.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+differenceOfVectors(v1, v2)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+v2 = [4, 5, 6]
+v3 = differenceOfVectors(v1, v2)
+print(v3)
+```
+
+Example output:
+
+```
+[-3, -3, -3]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def differenceOfVectors(v1, v2):
+    """Returns the vector subtraction of v1 and v2"""
+    if len(v1) != len(v2):
+        raise ValueError("Vectors must be of same length")
+    return [v1[i] - v2[i] for i in range(len(v1))]
+```
+
+## Vector Scalar Multiplication
+
+**Routine Name:** `vectorScalarMultiplication`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will multiply a vector by a scalar. This function takes as input a scalar and vector. It returns a vector that is the product of the input vector and scalar.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorScalarMultiplication(scalar, vector)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+v2 = vectorScalarMultiplication(2, v1)
+print(v2)
+```
+
+Example output:
+
+```
+[2, 4, 6]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def vectorScalarMultiplication(scalar, v):
+    """Returns the scalar multiplication of scalar and v"""
+    return [scalar * v[i] for i in range(len(v))]
+```
+
+## Vector L1 Norm
+
+**Routine Name:** `vectorL1Norm`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the L1 norm of a vector. This function takes as input a vector. It returns the L1 norm of the input vector, which is the sum of the absolute values of the vector.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorL1Norm(vector)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+norm = vectorL1Norm(v1)
+print(norm)
+```
+
+Example output:
+
+```
+6
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def vectorL1Norm(v):
+    """Returns the L1 norm of v"""
+    return sum([abs(v[i]) for i in range(len(v))])
+```
+
+## Vector L2 Norm
+
+**Routine Name:** `vectorL2Norm`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the L2 norm of a vector. This function takes as input a vector. It returns the L2 norm of the input vector, which is the square root of the sum of the squares of the vector.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorL2Norm(vector)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+norm = vectorL2Norm(v1)
+print(norm)
+```
+
+Example output:
+
+```
+3.7416573867739413
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+from math import sqrt
+
+def vectorL2Norm(v):
+    """Returns the L2 norm of v"""
+    return sqrt(sum([v[i] * v[i] for i in range(len(v))]))
+```
+
+## Vector Infinity Norm
+
+**Routine Name:** `vectorInfinityNorm`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the infinity norm of a vector. This function takes as input a vector. It returns the infinity norm of the input vector, which is the maximum of the absolute values of the components of the vector.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorInfinityNorm(vector)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+norm = vectorInfinityNorm(v1)
+print(norm)
+```
+
+Example output:
+
+```
+3
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def vectorInfinityNorm(v):
+    """Returns the infinity norm of v"""
+    return max([abs(v[i]) for i in range(len(v))])
+```
+
+## Vector Dot Product
+
+**Routine Name:** `vectorDotProduct`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the dot product of two vectors. This function takes as input two vectors, `v1` and `v2`. It returns the dot product of the two input vectors.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorDotProduct(v1, v2)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+v2 = [4, 5, 6]
+dot = vectorDotProduct(v1, v2)
+print(dot)
+```
+
+Example output:
+
+```
+32
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def vectorDotProduct(v1, v2):
+    """Returns the dot product of v1 and v2"""
+    if len(v1) != len(v2):
+        raise ValueError("Vectors must be of same length")
+    return sum([v1[i] * v2[i] for i in range(len(v1))])
+```
+
+## Vector Cross Product
+
+**Routine Name:** `vectorCrossProduct`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the cross product of two vectors. This function takes as input two vectors, `v1` and `v2`. It returns the cross product of the two input vectors.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorCrossProduct(v1, v2)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+v2 = [4, 5, 6]
+cross = vectorCrossProduct(v1, v2)
+print(cross)
+```
+
+Example output:
+
+```
+[-3, 6, -3]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def vectorCrossProduct(v1, v2):
+    """Returns the cross product of v1 and v2"""
+    if len(v1) != 3 or len(v2) != 3:
+        raise ValueError("Vectors must be of length 3")
+    return [v1[1] * v2[2] - v1[2] * v2[1], v1[2] * v2[0] - v1[0] * v2[2], v1[0] * v2[1] - v1[1] * v2[0]]
+```
+
+## Vector Triple Product
+
+**Routine Name:** `vectorTripleProduct`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the triple product of three vectors. This function takes as input three vectors, `v1`, `v2`, and `v3`. It returns the triple product of the three input vectors, which is the dot product of `v1` and the cross product of `v2` and `v3`.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+vectorTripleProduct(v1, v2, v3)
+```
+
+Example usage:
+
+```python
+v1 = [1, 2, 3]
+v2 = [4, 5, 6]
+v3 = [7, 8, 9]
+triple = vectorTripleProduct(v1, v2, v3)
+print(triple)
+```
+
+Example output:
+
+```
+0
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def vectorTripleProduct(v1, v2, v3):
+    """Returns the triple product of v1, v2, and v3"""
+    if len(v1) != 3 or len(v2) != 3 or len(v3) != 3:
+        raise ValueError("Vectors must be of length 3")
+    return vectorDotProduct(v1, vectorCrossProduct(v2, v3))
+```
+
+## Action of a Matrix on a Vector
+
+**Routine Name:** `matrixVectorProduct`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the action of a matrix on a vector. This function takes as input a matrix and a vector. It returns the vector that is the result of the matrix acting on the input vector.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+matrixVectorProduct(matrix, vector)
+```
+
+Example usage:
+
+```python
+m1 = [[1, 2, 3], [4, 5, 6]]
+v1 = [7, 8, 9]
+product = matrixVectorProduct(m1, v1)
+print(product)
+```
+
+Example output:
+
+```
+[50, 122]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def matrixVectorProduct(m, v):
+    """Returns the action of matrix m on vector v"""
+    if len(m[0]) != len(v):
+        raise ValueError("Matrix and vector must be of appropriate length")
+    return [vectorDotProduct(m[i], v) for i in range(len(m))]
+```
+
+## Matrix Addition
+
+**Routine Name:** `sumOfMatrices`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the sum of two matrices. This function takes as input two matrices, `m1` and `m2`. It returns the matrix that is the sum of the two input matrices.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+sumOfMatrices(m1, m2)
+```
+
+Example usage:
+
+```python
+m1 = [[1, 2, 3], [4, 5, 6]]
+m2 = [[7, 8, 9], [10, 11, 12]]
+sum = sumOfMatrices(m1, m2)
+print(sum)
+```
+
+Example output:
+
+```
+[[8, 10, 12], [14, 16, 18]]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def sumOfMatrices(m1, m2):
+    """Returns the sum of matrices m1 and m2"""
+    if len(m1) != len(m2):
+        raise ValueError("Matrices must be of same length")
+    return [sumOfVectors(m1[i], m2[i]) for i in range(len(m1))]
+```
+
+## Matrix Subtraction
+
+**Routine Name:** `differenceOfMatrices`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the difference of two matrices. This function takes as input two matrices, `m1` and `m2`. It returns the matrix that is the difference of the two input matrices.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+differenceOfMatrices(m1, m2)
+```
+
+Example usage:
+
+```python
+m1 = [[1, 2, 3], [4, 5, 6]]
+m2 = [[1, 2, 3], [4, 5, 6]]
+diff = differenceOfMatrices(m1, m2)
+print(diff)
+```
+
+Example output:
+
+```
+[[0, 0, 0], [0, 0, 0]]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def differenceOfMatrices(m1, m2):
+    """Returns the difference of matrices m1 and m2"""
+    if len(m1) != len(m2):
+        raise ValueError("Matrices must be of same length")
+    return [differenceOfVectors(m1[i], m2[i]) for i in range(len(m1))]
+```
+
+## Matrix Multiplication
+
+**Routine Name:** `productOfMatrices`
+
+**Author:** Kollin Murphy
+
+**Language:** Python3
+
+**Description/Purpose:** This routine will calculate the product of two matrices. This function takes as input two matrices, `m1` and `m2`. It returns the matrix that is the product of the two input matrices. It will raise a `ValueError` if the matrices are not of appropriate dimensions.
+
+#### Usage
+
+The function accepts parameters as follows:
+
+```python
+productOfMatrices(m1, m2)
+```
+
+Example usage:
+
+```python
+m1 = [[1, 2, 3], [4, 5, 6]]
+m2 = [[1, 2], [3, 4], [5, 6]]
+product = productOfMatrices(m1, m2)
+print(product)
+```
+
+Example output:
+
+```
+[[22, 28], [49, 64]]
+```
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def productOfMatrices(m1, m2):
+    """Returns the product of matrices m1 and m2"""
+    if len(m1[0]) != len(m2):
+        raise ValueError("Matrices must be of appropriate length")
+    return [[vectorDotProduct(m1[i], col(m2, j)) for j in range(len(m2[0]))] for i in range(len(m1))]
+```
+
