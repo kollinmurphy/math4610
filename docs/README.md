@@ -802,8 +802,49 @@ def explicitEulerLogistic(alpha, beta, p0):
 
 **Language:** Python3
 
-**Description/Purpose:** This routine will solve the logistic equation using the implicit Euler method.
+**Description/Purpose:** This routine will solve the logistic equation using the implicit Euler method. This function takes as input the parameters alpha, beta, p0, n, and h. It returns two lists, the first one containing the values of $t$, and the second one containing the values of $P(t)$. The function uses the implicit Euler method to solve the logistics equation. The function uses Newton's method to solve the rootfinding problem that arises during the implicit Euler algorithm. The function uses the `newtons` function from the `hw2` package to solve the rootfinding problem.
 
-#### Usage/Example
+#### Usage
 
 The function accepts parameters as follows:
+
+```python
+implicitEulerLogistic(alpha, beta, p0, n=100, h=1.0)
+```
+
+Example usage:
+
+```python
+tvals, pvals = implicitEulerMethod(0.2, 0.0005, 10.0, 75, 1.0)
+plt.title("Test 1")
+plt.xlabel('t')
+plt.ylabel('P(t)')
+plt.plot(tvals, pvals)
+plt.savefig("test1.png")
+plt.clf()
+```
+
+Example output:
+
+<img src="../hw5/task1-test1.png" width="400px" />
+
+#### Implementation
+
+The function is implemented as follows:
+
+```python
+def implicitEulerMethod(alpha, beta, p0, n=100, h=1.0):
+  """Solve the logistic equation using the implicit Euler method."""
+
+  def fPrime(p):
+    return 1 - alpha * h + 2 * h * beta * p
+
+  ptable = [0 for i in range(n)]
+  ptable[0] = p0
+  for i in range(1,n):
+    def f(p):
+      return p - ptable[i - 1] - h * (alpha * p - beta * p * p)
+    pval = newtons(f, fPrime, ptable[i - 1], 100, 1e-6)
+    ptable[i] = pval
+  return zip(*[[i*h, ptable[i]] for i in range(n)])
+```
