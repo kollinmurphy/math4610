@@ -4,7 +4,9 @@
 
 To calculate an approximation of $\pi$, I decided to use the following integral:
 $$
+\begin{align*}
 \int \frac{1}{\sqrt{1-x^2}}dx = \arcsin(x)+C
+\end{align*}
 $$
  By taking the definite integral from $0$ to $1$, we are able to get a multiple of $\pi$.
 $$
@@ -16,7 +18,9 @@ $$
 $$
 Therefore, we can use the following to generate our approximation:
 $$
+\begin{align*}
 6\int_0^{\frac{1}{2}} \frac{1}{\sqrt{1-x^2}}dx=\pi
+\end{align*}
 $$
 
 ## Task 2: Coding an Approximation of Pi
@@ -106,7 +110,43 @@ As before, I got the same output `pi = 3.1415926573648885`. With the compiler op
 
 ## Task 4: Approximating the value of $e$
 
+To approximate the value of $e$, I tried to use a similar method to the method for approximating $\pi$, but I couldn't find an integral that would produce a multiple of $e$. So, I decided to use the well-known equation for $e$:
+$$
+\begin{align*}
+e = \sum_{k=0}^{\infty} \frac{1}{k!} = \frac{1}{0!}+\frac{1}{1!}+\frac{1}{2!}+\cdots
+\end{align*}
+$$
+To code this, I knew to reduce round-off error, it would be best to start summing the results at the smallest, so that is how I wrote the algorithm. I first wrote serial code to do this. I used 1000 iterations to produce the approximation. First, I defined a `factorial` function which takes a positive integer or zero and returns its factorial by using the recursive formula. Then, I initialized a loop starting from the $n$th iteration counting down to zero to sum the value.
 
+```c
+#include <stdio.h>
+#include <math.h>
+
+double factorial(int n)
+{
+  if (n == 0)
+  {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}
+
+int main()
+{
+  double sum = 0;
+  int n = 1000;
+  for (int i = n; i >= 0; i--)
+  {
+    sum += 1 / factorial(i);
+  }
+  printf("e = %.16f\n", sum);
+  return 0;
+}
+```
+
+This algorithm is very simple, and it runs in about $0.09$ seconds on my machine, but it's rather inefficient. One clear way we could make this algorithm significantly faster is to parallelize it using OpenMP. We could do that by promoting the scalar `sum` to be an array of partial sums, with each entry in the array being modified by a single thread. We could modify the loop to interlace the iterations between threads. Finally, we could sum up the array of partial sums to compute the final approximation.
+
+Another way this algorithm could be optimized is by memoizing the factorial calls to prevent duplicate calculations.
 
 ## Task 5: Linear Algebra Algorithms
 
