@@ -11,3 +11,5 @@ This repo contains Kollin Murphy's code for the USU Math 4610 course.
 - [Assignment #4](hw4/README.md)
 - [Assignment #5](hw5/README.md)
 - [Assignment #6](hw6/README.md)
+- [Assignment #7](hw7/README.md)
+- [Assignment #8](hw8/README.md)
