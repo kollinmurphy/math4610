@@ -39,41 +39,42 @@ double computePowerMethod(double *A, int n, double *v0, int maxIterations, doubl
 {
   double lambda0 = 0.0;
   double lambda1 = 0.0;
-  double v1[n];
+  double y[n];
+  double z[n];
+  double w[n];
   double error = 10.0 * tolerance;
   int iter = 0;
   double norm;
-  double Az[n];
 
-  for (int i = 0; i < n; i++)
-  {
-    v1[i] = v0[i];
-  }
+  matrixVectorProduct(n, n, A, v0, y);
 
   while (error > tolerance && iter < maxIterations)
   {
-    matrixVectorProduct(n, n, A, v0, v1);
-    norm = l2Norm(n, v1);
+    norm = l2Norm(n, y);
     for (int i = 0; i < n; i++)
     {
-      v1[i] /= norm;
+      z[i] = y[i] / norm;
     }
-    matrixVectorProduct(n, n, A, v1, Az);
-    lambda1 = dotProduct(n, v1, Az);
+    matrixVectorProduct(n, n, A, z, w);
+    lambda1 = dotProduct(n, z, w);
     error = fabs(lambda1 - lambda0);
     lambda0 = lambda1;
     for (int i = 0; i < n; i++)
     {
-      v0[i] = v1[i];
+      y[i] = w[i];
     }
     iter++;
+  }
+  for (int i = 0; i < n; i++)
+  {
+    v0[i] = z[i];
   }
   return lambda0;
 }
 
 int main()
 {
-  int n = 12;
+  int n = 3;
   double A[n * n];
   double v0[n];
 
@@ -88,8 +89,8 @@ int main()
       }
       else
       {
-
         A[i * n + j] = rand() % 20;
+        A[j * n + i] = A[i * n + j];
       }
     }
   }

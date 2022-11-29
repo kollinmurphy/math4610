@@ -137,7 +137,7 @@ double computePowerMethod(double *A, int n, double *v0, int maxIterations, doubl
   double error = 10.0 * tolerance;
   int iter = 0;
   double norm;
-  double Az[n * n];
+  double Az[n];
 
   for (int i = 0; i < n; i++)
   {
@@ -234,4 +234,53 @@ v0:
 0.182998 0.200234 0.512750 0.241955 0.170041 0.238789 0.229235 0.179139 0.335177 0.451437 0.221033 0.263430
 
 lambdaMax = 409.549041
+```
+
+## Task 3: Reorganizing the algorithm for efficiency
+
+I implemented the more efficient version of the power method that uses only one computation of the matrix-vector product per iteration. The code is as follows:
+
+```c
+double computePowerMethod(double *A, int n, double *v0, int maxIterations, double tolerance)
+{
+  double lambda0 = 0.0;
+  double lambda1 = 0.0;
+  double y[n];
+  double z[n];
+  double w[n];
+  double error = 10.0 * tolerance;
+  int iter = 0;
+  double norm;
+
+  matrixVectorProduct(n, n, A, v0, y);
+
+  while (error > tolerance && iter < maxIterations)
+  {
+    norm = l2Norm(n, y);
+    for (int i = 0; i < n; i++)
+    {
+      z[i] = y[i] / norm;
+    }
+    matrixVectorProduct(n, n, A, z, w);
+    lambda1 = dotProduct(n, z, w);
+    error = fabs(lambda1 - lambda0);
+    lambda0 = lambda1;
+    for (int i = 0; i < n; i++)
+    {
+      y[i] = w[i];
+    }
+    iter++;
+  }
+  for (int i = 0; i < n; i++)
+  {
+    v0[i] = z[i];
+  }
+  return lambda0;
+}
+```
+
+Comparing the performance of the two versions of the power method, I found that the more efficient version was about TODO times faster than the original version. The test code is as follows:
+
+```c
+
 ```
