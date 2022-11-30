@@ -1,5 +1,13 @@
 # Software Manual by Kollin Murphy
 
+## Table of Contents For Grading
+
+1. [Fixed Point Iteration](fixedPoint.md)
+2. [Least Squares](leastSquares.md)
+3. [Second Derivative Approximation](secondDerivative.md)
+4. [Hadamard Product of Matrices](hadamardMatrices.md)
+5. [Explicit Euler Logistic](explicitEulerLogistic.md)
+
 ## Table of Contents
 
 1. [Fixed Point Iteration](#fixed-point-iteration)

@@ -1,4 +1,4 @@
-# Tasksheet 9 by Kollin Murphy
+# Tasksheet 8 by Kollin Murphy
 
 ## Task 1: Kronecker Product of Two Matrices
 
@@ -492,3 +492,101 @@ Around the size of a 200x200 matrix, the parallelized version started to outperf
 
 ## Task 5: Implementing Jacobi Iteration
 
+I implemented Jacobi iteration to approximate the solution to a system of linear equations using the residual formula. I used the following code to implement Jacobi iteration:
+
+```c
+void jacobiIteration(int n, double *A, double *b, double *x0, double tolerance, int maxIterations)
+{
+  double error = 10.0 * tolerance;
+  int iter = 0;
+  double v[n];
+  double r[n];
+  double x1[n];
+
+  for (int i = 0; i < n; i++)
+    v[i] = x0[i];
+
+  for (int i = 0; i < n; i++)
+  {
+    double sum = b[i];
+    for (int j = 0; j < n; j++)
+      sum -= A[i * n + j] * v[j];
+    r[i] = sum;
+  }
+
+  while (error > tolerance && iter < maxIterations)
+  {
+    // get next x
+    for (int i = 0; i < n; i++)
+      x1[i] = v[i] + r[i] / A[i * n + i];
+
+    // get next error
+    error = 0;
+    for (int i = 0; i < n; i++)
+    {
+      double diff = x1[i] - v[i];
+      error += diff * diff;
+    }
+    error = sqrtf(error);
+
+    iter++;
+
+    // get next residual
+    for (int i = 0; i < n; i++)
+    {
+      double sum = b[i];
+      for (int j = 0; j < n; j++)
+        sum -= A[i * n + j] * x1[j];
+      r[i] = sum;
+    }
+
+    // overwrite v
+    for (int i = 0; i < n; i++)
+      v[i] = x1[i];
+  }
+
+  for (int i = 0; i < n; i++)
+    x0[i] = v[i];
+}
+```
+
+I generated a random 100x100, diagonally dominant matrix and a random 100x1 vector. I then used the Jacobi iteration method to approximate the solution to the system of linear equations. I used the following code to test the Jacobi iteration method:
+
+```c
+
+int main()
+{
+  int n = 100;
+  double A[n * n];
+  double b[n];
+  double x0[n];
+  for (int i = 0; i < n; i++)
+  {
+    x0[i] = 0.0;
+    b[i] = rand() % 10000;
+    for (int j = 0; j < n; j++)
+    {
+      if (i == j)
+        A[i * n + j] = 21 * n + rand() % 100 + 10;
+      else
+        A[i * n + j] = rand() % 20 + 1;
+    }
+  }
+
+  jacobiIteration(n, A, b, x0, 0.0001, 100);
+
+  for (int i = 0; i < n; i++)
+    printf("%f ", x0[i]);
+  printf("\n");
+
+  return 0;
+}
+```
+
+The results of my test were as follows:
+
+```
+-0.007831 -0.006950 -0.006786 -0.006073 -0.005442 -0.005682 -0.005095 -0.004575 -0.004012 -0.003835 -0.001699 -0.003030 -0.003004 -0.000661 -0.001475 -0.001031 -0.000293 0.000181 -0.000122 0.000458 0.001698 0.001496 0.002705 0.002652 0.004035 0.005046 0.005114 0.004733 0.006122 0.006940 0.008057 0.006366 0.006763 0.008477 0.007860 0.007982 0.008367 0.010303 0.009504 0.011262 0.011392 0.011695 0.012126 0.011251 0.013569 0.012722 0.013204 0.014717 0.014678 0.014799 0.015722 0.016550 0.016127 0.016411 0.018608 0.017616 0.018390 0.019346 0.020792 0.020193 0.020634 0.021541 0.021843 0.021528 0.021599 0.022597 0.023053 0.023219 0.025099 0.024160 0.025379 0.025391 0.025677 0.026880 0.026755 0.028543 0.027957 0.028269 0.028360 0.028743 0.030025 0.029855 0.030727 0.032330 0.032343 0.031589 0.032944 0.033141 0.033929 0.032301 0.033539 0.034407 0.034214 0.035230 0.036885 0.038232 0.036557 0.036152 0.037461 0.038417
+```
+
+It was able to successfully approximate the solution to the system of linear equations. I also tested it on a smaller matrix with a known solution and it was able to successfully approximate the solution to the system of linear equations within the given tolerance.

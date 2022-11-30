@@ -1,4 +1,6 @@
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 void jacobiIteration(int n, double *A, double *b, double *x0, double tolerance, int maxIterations)
 {
@@ -9,19 +11,13 @@ void jacobiIteration(int n, double *A, double *b, double *x0, double tolerance, 
   double x1[n];
 
   for (int i = 0; i < n; i++)
-  {
     v[i] = x0[i];
-  }
 
   for (int i = 0; i < n; i++)
   {
     double sum = b[i];
     for (int j = 0; j < n; j++)
-    {
-      // if (i != j) {
-      sum -= A[i * n + j] * v[j]; // or maybe v[i]?
-      // }
-    }
+      sum -= A[i * n + j] * v[j];
     r[i] = sum;
   }
 
@@ -29,9 +25,7 @@ void jacobiIteration(int n, double *A, double *b, double *x0, double tolerance, 
   {
     // get next x
     for (int i = 0; i < n; i++)
-    {
       x1[i] = v[i] + r[i] / A[i * n + i];
-    }
 
     // get next error
     error = 0;
@@ -49,18 +43,49 @@ void jacobiIteration(int n, double *A, double *b, double *x0, double tolerance, 
     {
       double sum = b[i];
       for (int j = 0; j < n; j++)
-      {
-        // if (i != j) {
-        sum -= A[i * n + j] * x1[j]; // or maybe x1[i]?
-        // }
-      }
+        sum -= A[i * n + j] * x1[j];
       r[i] = sum;
     }
 
     // overwrite v
     for (int i = 0; i < n; i++)
-    {
       v[i] = x1[i];
+  }
+
+  for (int i = 0; i < n; i++)
+    x0[i] = v[i];
+}
+
+int main()
+{
+  int n = 100;
+  double A[n * n];
+  double b[n];
+  double x0[n];
+  for (int i = 0; i < n; i++)
+  {
+    x0[i] = 0.0;
+    b[i] = rand() % 10000;
+    for (int j = 0; j < n; j++)
+    {
+      if (i == j)
+      {
+        A[i * n + j] = 21 * n + rand() % 100 + 10;
+      }
+      else
+      {
+        A[i * n + j] = rand() % 20 + 1;
+      }
     }
   }
+
+  jacobiIteration(n, A, b, x0, 0.0001, 100);
+
+  for (int i = 0; i < n; i++)
+  {
+    printf("%f ", x0[i]);
+  }
+  printf("\n");
+
+  return 0;
 }
