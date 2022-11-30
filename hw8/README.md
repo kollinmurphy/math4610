@@ -186,7 +186,6 @@ int main()
       }
       else
       {
-
         A[i * n + j] = rand() % 20;
       }
     }
@@ -241,7 +240,7 @@ lambdaMax = 409.549041
 I implemented the more efficient version of the power method that uses only one computation of the matrix-vector product per iteration. The code is as follows:
 
 ```c
-double computePowerMethod(double *A, int n, double *v0, int maxIterations, double tolerance)
+double optimizedPowerMethod(double *A, int n, double *v0, int maxIterations, double tolerance)
 {
   double lambda0 = 0.0;
   double lambda1 = 0.0;
@@ -279,8 +278,217 @@ double computePowerMethod(double *A, int n, double *v0, int maxIterations, doubl
 }
 ```
 
-Comparing the performance of the two versions of the power method, I found that the more efficient version was about TODO times faster than the original version. The test code is as follows:
+To compare the performance of the two versions of the power method, I generated random matrices of size 10x10, 100x100, and 200x200. I then computed the largest eigenvalue and eigenvector of each matrix using both versions of the power method. I repeated this process 100 times for each matrix size. I then computed the average time taken by each version of the power method to compute the largest eigenvalue and eigenvector of each matrix size. My test code is as follows:
+
 
 ```c
+int main()
+{
+  int n = 10;
+  double A[n * n];
+  double v0[n];
+
+  double timeRegular;
+  double timeOptimized;
+  double start;
+  double end;
+
+  int m = 100;
+
+  double maxIter = 100;
+  double tolerance = 0.0001;
+  double result;
+
+  printf("maxIter = %f; tolerance = %f\n\n", maxIter, tolerance);
+
+  printf("10x10\n");
+
+  timeRegular = 0;
+  timeOptimized = 0;
+  for (int i = 0; i < m; i++)
+  {
+    for (int i = 0; i < n; i++)
+    {
+      v0[i] = 1.0;
+      for (int j = 0; j < n; j++)
+      {
+        if (i == j)
+        {
+          A[i * n + j] = 20 * n + rand() % 100 + 10;
+        }
+        else
+        {
+          A[i * n + j] = rand() % 20;
+        }
+      }
+    }
+    start = omp_get_wtime();
+    result = computePowerMethod(A, n, v0, maxIter, tolerance);
+    end = omp_get_wtime();
+    timeRegular += end - start;
+
+    start = omp_get_wtime();
+    result = optimizedPowerMethod(A, n, v0, maxIter, tolerance);
+    end = omp_get_wtime();
+    timeOptimized += end - start;
+  }
+  printf("regular:   %f\n", timeRegular / m);
+  printf("optimized: %f\n", timeOptimized / m);
+
+  printf("\n100x100\n");
+  n = 100;
+  for (int i = 0; i < m; i++)
+  {
+    double A2[n * n];
+    double v02[n];
+    for (int i = 0; i < n; i++)
+    {
+      v02[i] = 1.0;
+      for (int j = 0; j < n; j++)
+      {
+        if (i == j)
+        {
+          A2[i * n + j] = 20 * n + rand() % 100 + 10;
+        }
+        else
+        {
+          A2[i * n + j] = rand() % 20;
+        }
+      }
+    }
+    start = omp_get_wtime();
+    result = computePowerMethod(A2, n, v02, maxIter, tolerance);
+    end = omp_get_wtime();
+    timeRegular += end - start;
+
+    start = omp_get_wtime();
+    result = optimizedPowerMethod(A2, n, v02, maxIter, tolerance);
+    end = omp_get_wtime();
+    timeOptimized += end - start;
+  }
+  printf("regular:   %f\n", timeRegular / m);
+  printf("optimized: %f\n", timeOptimized / m);
+
+
+  printf("\n200x200\n");
+  n = 200;
+
+  for (int i = 0; i < m; i++) {
+    double A3[n * n];
+    double v03[n];
+    for (int i = 0; i < n; i++)
+    {
+      v03[i] = 1.0;
+      for (int j = 0; j < n; j++)
+      {
+        if (i == j)
+        {
+          A3[i * n + j] = 20 * n + rand() % 100 + 10;
+        }
+        else
+        {
+          A3[i * n + j] = rand() % 20;
+        }
+      }
+    }
+    start = omp_get_wtime();
+    result = computePowerMethod(A3, n, v03, maxIter, tolerance);
+    end = omp_get_wtime();
+    timeRegular += end - start;
+
+    start = omp_get_wtime();
+    result = optimizedPowerMethod(A3, n, v03, maxIter, tolerance);
+    end = omp_get_wtime();
+    timeOptimized += end - start;
+  }
+  printf("regular:   %f\n", timeRegular / m);
+  printf("optimized: %f\n", timeOptimized / m);
+}
+```
+
+The results of my test are as follows:
 
 ```
+maxIter = 100.000000; tolerance = 0.000100
+
+10x10
+regular:   0.000080
+optimized: 0.000005
+
+100x100
+regular:   0.003056
+optimized: 0.001078
+
+200x200
+regular:   0.018446
+optimized: 0.012424
+```
+
+As can be seen, the optimized version of the power method is significantly faster than the regular version. The optimized version of the power method is approximately 16 times faster than the regular version for a 10x10 matrix, approximately 3 times faster for a 100x100 matrix, and approximately 1.5 times faster for a 200x200 matrix.
+
+The results also varied significantly based on the given tolerance. When the tolerance was larger, the optimized algorithm outperformed the other algorithm by even more on the larger matrices. Here is a result with a tolerance of 0.01:
+
+```
+maxIter = 100.000000; tolerance = 0.010000
+
+10x10
+regular:   0.000016
+optimized: 0.000003
+
+100x100
+regular:   0.001447
+optimized: 0.000222
+
+200x200
+regular:   0.007309
+optimized: 0.001034
+```
+
+The optimized version of the power method is approximately 5 times faster than the regular version for a 10x10 matrix, approximately 6.5 times faster for a 100x100 matrix, and approximately 7 times faster for a 200x200 matrix.
+
+## Task 4: Parallelizing the Power Method
+
+I parallelized the power method by using OpenMP to parallelize the matrix-vector multiplication. I used the following code to parallelize the matrix-vector multiplication:
+
+```c
+void parallelizedMatrixVectorProduct(int n, int m, double *matrix, double *vector, double *result)
+{
+  double s;
+#pragma omp parallel for
+  for (int i = 0; i < n; i++)
+  {
+    result[i] = 0;
+    for (int j = 0; j < m; j++)
+    {
+      result[i] += matrix[i * n + j] * vector[j];
+    }
+  }
+}
+```
+
+I noticed that the parallelized version was faster on larger matrices, but slower on smaller matrices. This is to be expected due to the overhead of spinning up new threads when there aren't many operations to perform. Because of this, I also added code to test 500x500 matrices. Here are the results of my test:
+
+```
+maxIter = 100.000000; tolerance = 0.000100
+
+10x10
+optimized:    0.000032
+parallelized: 0.000241
+
+100x100
+optimized:    0.001586
+parallelized: 0.001679
+
+200x200
+optimized:    0.009567
+parallelized: 0.007905
+
+500x500
+optimized:    0.087857
+parallelized: 0.040290
+```
+
+Around the size of a 200x200 matrix, the parallelized version started to outperform the non-parallelized implementation. The parallelized version is approximately 7.5 times slower than the optimized version for a 10x10 matrix and approximately 1.3 times slower for a 100x100 matrix. The parallelized version is approximately 1.2 times faster for a 200x200 matrix and approximately 2.2 times faster for a 500x500 matrix.
+
+## Task 5: Implementing Jacobi Iteration
+
