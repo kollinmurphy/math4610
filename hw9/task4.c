@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 double l2Norm(int n, double vector[n])
 {
@@ -79,6 +80,7 @@ double dotProduct(int n, double vector1[n], double vector2[n])
 void matrixVectorProduct(int n, int m, double *matrix, double *vector, double *result)
 {
   double s;
+#pragma omp parallel for
   for (int i = 0; i < n; i++)
   {
     result[i] = 0;
@@ -181,12 +183,23 @@ void copyMatrix(int n, double *A, double *B)
 int main()
 {
   int n = 3;
-  double A[9] = {67, 8, 4, 8, 90, 8, 4, 8, 83};
+  double A[n * n];
+  double B[n * n];
   double v[n];
   double x0[n];
+
   for (int i = 0; i < n; i++)
   {
     x0[i] = 1.0;
+    for (int j = 0; j < n; j++)
+    {
+      if (i == j)
+        A[i * n + j] = 20 * n + (rand() % 100);
+      else {
+        A[i * n + j] = rand() % 10;
+        A[j * n + i] = A[i * n + j];
+      }
+    }
   }
 
   for (int i = 0; i < n; i++) {
@@ -204,22 +217,25 @@ int main()
   printf("lambdaMax = %f\n", lambdaMax);
 
   double lambdaMin = inversePowerMethod(n, A, v, x0, tolerance, maxIterations);
-  printf("lambdaMin = %f\n", lambdaMin);
+  printf("lambdaMin = %f\n\n", lambdaMin);
 
   double lambdaRange = lambdaMax - lambdaMin;
   int partitions = n;
   double partitionSize = lambdaRange / partitions;
 
-  double B[9];
-
-  for (int i = 1; i < partitions - 1; i++)
+  #pragma omp parallel
   {
-    copyMatrix(n, A, B);
-    double mu = lambdaMin + i * partitionSize;
-    for (int i = 0; i < n; i++)
-      B[i * n + i] -= mu;
-    double lambda = inversePowerMethod(n, B, v, x0, tolerance, maxIterations);
-    printf("lambda = %f\n", lambda + mu);
+    int threadId = omp_get_thread_num();
+    int numThreads = omp_get_num_threads();
+    for (int i = 1 + threadId; i < partitions - 1; i += numThreads)
+    {
+      copyMatrix(n, A, B);
+      double mu = lambdaMin + i * partitionSize;
+      for (int i = 0; i < n; i++)
+        B[i * n + i] -= mu;
+      double lambda = inversePowerMethod(n, B, v, x0, tolerance, maxIterations);
+      printf("lambda = %f\n", lambda + mu);
+    }
   }
 
   return 0;
