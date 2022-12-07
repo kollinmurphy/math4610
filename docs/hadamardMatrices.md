@@ -1,3 +1,4 @@
+[Table of Contents](README.md)
 
 ## Hadamard Product of Matrices
 

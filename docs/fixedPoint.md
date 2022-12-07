@@ -1,3 +1,5 @@
+[Table of Contents](README.md)
+
 ## Fixed Point Iteration
 
 **Routine Name:** `fixedPoint`

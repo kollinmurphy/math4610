@@ -1,3 +1,5 @@
+[Table of Contents](README.md)
+
 ## Least Squares Regression
 
 **Routine Name:** `leastSquares`
